@@ -12,16 +12,16 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="left" side="left" bordered content-class="bg-white" class="main-layout__drawer">
+    <q-drawer show-if-above v-model="left" side="left" bordered content-class="bg-white " class="main-layout__drawer fixed-left">
       <q-list dense padding class="rounded-borders text-black q-pt-lg">
-        <q-item clickable v-ripple >
+        <q-item clickable v-ripple :to="{ name: 'PostsList'}">
           <q-item-section avatar class="q-py-md">
             <q-icon color="black" name="home" />
           </q-item-section>
-          <q-item-section>Home</q-item-section>
+          <q-item-section >Home</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple :to="{ name: 'AuthorsList'}">
           <q-item-section avatar class="q-py-md">
             <q-icon color="black" name="person" />
           </q-item-section>
@@ -42,21 +42,7 @@ export default {
   data () {
     return {
       left: true,
-      values: {
-        firstAuthor: false,
-        secondAuthor: false,
-        thirdAuthor: false,
-        firstCategory: false,
-        secondtCategory: false,
-        thirdCategory: false
-      },
-
-      group: null,
-      options: [
-        { label: 'Mais recentes', value: 'recent', color: 'white' },
-        { label: 'Mais antigos', value: 'old', color: 'white' }
-      ],
-      date: ''
+      group: null
 
     }
   }
@@ -64,7 +50,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .main-layout__header{
-    line-height: 3;
+  .main-layout{
+    &__header{
+      line-height: 3;
+    }
+
+    &q-list{
+      z-index: 200;
+    }
   }
 </style>

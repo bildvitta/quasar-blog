@@ -1,5 +1,5 @@
 <template>
-  <div class="card-post">
+  <div class="card-post full-width">
     <div class="card-post__image">
       <img src="https://blog.emania.com.br/wp-content/uploads/2019/01/como-tirar-foto-de-cachorro-foco-1024x670.jpg" alt="cachorro">
       <p><span class="card-post__category">Categoria</span></p>
@@ -29,14 +29,14 @@ export default {
 
 <style lang="scss">
   .card-post{
-    width: 300px;
-    height: 300px;
-    box-shadow: 0px 0px 22px -1px rgba(0,0,0,0.5);
+    min-height: 300px;
+    background-color: white;
     position: relative;
+    border-radius: 30px;
 
     &__category{
       position: absolute;
-      top: 5px;
+      top: 25px;
       right: 0;
       background-color: $primary;
       color: white;
@@ -49,8 +49,8 @@ export default {
     }
 
     & img{
-      border-bottom-left-radius: 30px;
-      border-bottom-right-radius: 30px;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
       width: 100%;
       height: 150px;
     }
