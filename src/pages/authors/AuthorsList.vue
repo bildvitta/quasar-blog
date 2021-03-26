@@ -12,7 +12,7 @@
           </div>
 
         </div>
-        <q-btn icon="add" unelevated rounded color="primary" label="Adicionar autor" />
+        <q-btn icon="add" unelevated rounded color="primary" label="Adicionar autor" :to="{ name: 'AuthorsCreate'}" />
       </div>
       </div>
     </q-page>

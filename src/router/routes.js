@@ -7,7 +7,9 @@ const routes = [
       { path: '', name: 'PostsList', component: () => import('src/pages/posts/PostsList.vue') },
       { path: 'posts/new', name: 'PostsCreate', component: () => import('src/pages/posts/PostsCreate.vue') },
       { path: 'posts/:id/edit', name: 'PostsEdit', component: () => import('src/pages/posts/PostsEdit.vue') },
-      { path: 'authors', name: 'AuthorsList', component: () => import('src/pages/authors/AuthorsList.vue') }
+      { path: 'authors', name: 'AuthorsList', component: () => import('src/pages/authors/AuthorsList.vue') },
+      { path: 'authors/create', name: 'AuthorsCreate', component: () => import('src/pages/authors/AuthorsCreate.vue') },
+      { path: 'authors/:id/edit', name: 'AuthorsEdit', component: () => import('src/pages/authors/AuthorsEdit.vue') }
     ]
   },
 

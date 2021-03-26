@@ -39,26 +39,41 @@
                   <q-btn color="primary" label="Filtrar" />
                 </q-item-section>
               </q-item>
-
             </q-list>
           </q-menu>
         </q-btn>
       </div>
     </div>
 
-    <div class="page-list__content row q-col-gutter-x-md full-width">
-      <div class="col">
+    <div class="page-list__content row q-col-gutter-md full-width">
+      <div class="col-3 page-list__card">
         <card-post />
       </div>
-      <div class="col">
+      <div class="col-3 page-list__card">
         <card-post />
       </div>
-      <div class="col">
+      <div class="col-3 page-list__card">
         <card-post />
       </div>
-      <div class="col">
+      <div class="col-3 page-list__card">
         <card-post />
       </div>
+      <div class="col-3 page-list__card">
+        <card-post />
+      </div>
+      <div class="col-3 page-list__card">
+        <card-post />
+      </div>
+      <div class="col-3 page-list__card">
+        <card-post />
+      </div>
+      <div class="col-3 page-list__card">
+        <card-post />
+      </div>
+      <div class="col-3 page-list__card">
+        <card-post />
+      </div>
+
     </div>
 
     <div class="q-pa-lg flex flex-center page-list__pagination">
@@ -100,8 +115,8 @@ export default {
       width: 90%;
     }
 
-    &__content{
-      background: red;
+    &__card:nth-child(4n+1){
+      padding-left: 0;
     }
   }
 
