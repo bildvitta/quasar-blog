@@ -10,11 +10,13 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.</p>
     </div>
 
-    <div class="card-post__author">
-      <img src="https://media-exp1.licdn.com/dms/image/C4D03AQGH0reuYDLSlA/profile-displayphoto-shrink_200_200/0/1613651082514?e=1622073600&v=beta&t=R46px1RFUYurcLxxEwo-x9_3O75hqDhhxxAywmLALYg" alt="autor">
-      <div class="card-post__author-infomation">
-        <p><span>Nome autor</span></p>
-        <p>Data de postagem: <span>19/07/2019</span></p>
+    <div class="card-post__information">
+      <div class="card-post__author">
+        <img src="https://media-exp1.licdn.com/dms/image/C4D03AQGH0reuYDLSlA/profile-displayphoto-shrink_200_200/0/1613651082514?e=1622073600&v=beta&t=R46px1RFUYurcLxxEwo-x9_3O75hqDhhxxAywmLALYg" alt="autor">
+        <div class="card-post__author-infomation">
+          <p><span>Nome autor</span></p>
+          <p>Data de postagem: <span>19/07/2019</span></p>
+        </div>
       </div>
     </div>
 

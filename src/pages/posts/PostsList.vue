@@ -46,31 +46,31 @@
     </div>
 
     <div class="page-list__content row q-col-gutter-md full-width">
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
-      <div class="col-3 page-list__card">
+      <div class="col-sm-3 col-12 page-list__card">
         <card-post />
       </div>
 
