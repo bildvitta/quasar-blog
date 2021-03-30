@@ -11,7 +11,6 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-
     <q-drawer show-if-above v-model="left" side="left" bordered content-class="bg-white " class="main-layout__drawer fixed-left">
       <q-list dense padding class="rounded-borders text-black q-pt-lg">
         <q-item clickable v-ripple :to="{ name: 'PostsList'}">
@@ -29,7 +28,6 @@
         </q-item>
       </q-list>
     </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -43,7 +41,6 @@ export default {
     return {
       left: true,
       group: null
-
     }
   }
 }
@@ -54,7 +51,6 @@ export default {
     &__header{
       line-height: 3;
     }
-
     &q-list{
       z-index: 200;
     }

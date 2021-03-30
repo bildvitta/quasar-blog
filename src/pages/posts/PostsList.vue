@@ -21,22 +21,36 @@
             <q-list style="min-width: 200px">
               <q-item>
                 <q-item-section>
-                  <q-select v-model="vAuthor" :options='opauthor' label="Autor" />
+                  <q-select v-model="author" :options='authorOptions' label="Autor" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-select v-model="vCategory" :options='opcategory' label="Categoria" />
+                  <q-select v-model="category" :options='categoryOptions' label="Categoria" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-select v-model="vData" :options='opdata' label="Data" />
+                  <q-select v-model="data" :options='dataOptions' label="Data" />
+                  <q-input filled v-model="date" mask="date" :rules="['date']" class="q-mt-md">
+                      <template v-slot:append>
+                        <q-icon name="event" class="cursor-pointer">
+                          <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                            <q-date v-model="date">
+                              <div class="row items-center justify-end">
+                                <q-btn v-close-popup label="Close" color="primary" flat />
+                              </div>
+                            </q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                   </q-input>
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-btn color="primary" label="Filtrar" />
+                  <q-btn color="primary" flat label="Limpar" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -45,32 +59,32 @@
       </div>
     </div>
 
-    <div class="page-list__content row q-col-gutter-md full-width">
-      <div class="col-sm-3 col-12 page-list__card">
+    <div class="row q-col-gutter-md full-width">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
-      <div class="col-sm-3 col-12 page-list__card">
+      <div class="col-sm-3 col-12">
         <card-post />
       </div>
 
@@ -96,12 +110,13 @@ export default {
       current: '1',
       text: '',
       model: '',
-      opcategory: ['Categoria 1', 'Categoria 2'],
-      opauthor: ['Autor 1', 'Autor 2', 'Autor 3'],
-      opdata: ['Mais recentes', 'Mais antigos'],
-      vAuthor: '',
-      vCategory: '',
-      vData: ''
+      categoryOptions: ['Categoria 1', 'Categoria 2'],
+      authorOptions: ['Autor 1', 'Autor 2', 'Autor 3'],
+      dataOptions: ['Mais recentes', 'Mais antigos'],
+      author: '',
+      category: '',
+      data: '',
+      date: '2019/02/01'
     }
   }
 }
@@ -109,8 +124,6 @@ export default {
 
 <style lang="scss">
   .page-list{
-    position: relative;
-
     &__search{
       width: 90%;
     }
@@ -119,8 +132,4 @@ export default {
       padding-left: 0;
     }
   }
-
-  // .teste{
-
-  // }
 </style>
