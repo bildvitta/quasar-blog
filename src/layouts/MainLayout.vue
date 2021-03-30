@@ -17,7 +17,7 @@
           <q-item-section avatar class="q-py-md">
             <q-icon color="black" name="home" />
           </q-item-section>
-          <q-item-section >Home</q-item-section>
+          <q-item-section>Home</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple :to="{ name: 'AuthorsList'}">
