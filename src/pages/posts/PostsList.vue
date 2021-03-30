@@ -1,10 +1,10 @@
 <template>
-  <q-page class="bg-grey-2 q-pa-lg page-list">
-    <div class="page-list__information">
-      <div class="page-list__top flex justify-between">
+  <q-page class="bg-grey-2 q-pa-lg page-posts-list">
+    <div>
+      <div class="flex justify-between">
         <div>
           <p class="text-h5 q-mb-xs">Postagens</p>
-          <div class="page-list__path">
+          <div>
             <q-breadcrumbs>
               <q-breadcrumbs-el label="Home" />
               <q-breadcrumbs-el label="Postagens" />
@@ -14,8 +14,8 @@
         <q-btn icon="add" unelevated rounded color="primary" label="Adicionar post" :to="{ name: 'PostsCreate'}" />
       </div>
 
-      <div class="page-list__filter flex q-my-lg justify-between">
-        <q-input v-model="text" label="Procurar" class="page-list__search" />
+      <div class="flex q-my-lg justify-between">
+        <q-input v-model="text" label="Procurar" class="page-posts-list__search col" />
         <q-btn flat  color="primary" icon="filter_list" label="Filtrar">
           <q-menu>
             <q-list style="min-width: 200px">
@@ -90,7 +90,7 @@
 
     </div>
 
-    <div class="q-pa-lg flex flex-center page-list__pagination">
+    <div class="q-pa-lg flex flex-center">
     <q-pagination v-model="current" :max="5" direction-links boundary-links icon-first="skip_previous"
       icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" />
   </div>
@@ -100,11 +100,13 @@
 
 <script>
 import CardPost from 'src/components/CardPost.vue'
+
 export default {
 
   components: {
     CardPost
   },
+
   data () {
     return {
       current: '1',
@@ -123,11 +125,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .page-list{
-    &__search{
-      width: 90%;
-    }
-
+  .page-posts-list{
     &__card:nth-child(4n+1){
       padding-left: 0;
     }
