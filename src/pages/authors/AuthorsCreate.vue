@@ -13,12 +13,14 @@
         </div>
       </div>
       <div class="q-my-lg relative-position">
-        <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" />
-        <q-input outlined v-model="email" label="E-mail" />
+        <small class="text-negative" v-show="checkFilledFields" >Todos os campos devem ser preenchidos</small>
+        <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ val => val.length >= 3 || 'É necessário no mínimo 3 caracteres']" />
+        <q-input outlined v-model="email" label="E-mail" suffix="@gmail.com" :rules="[ val => val.length >= 3 || 'E-mail digitado não é válido']" />
         <div class="q-my-lg">
-          <q-btn color="primary" label="Criar" @click='addAuthorToList' />
-          <q-btn color="primary" flat label="Cancelar" @click='confirmCancel' />
+          <q-btn color="primary" label="Criar" @click="addAuthorToList" />
+          <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
         </div>
+
          <q-dialog v-model="confirmCancelData" persistent>
             <q-card>
               <q-card-section class="row items-center">
@@ -26,7 +28,7 @@
               </q-card-section>
               <q-card-actions align="center">
                 <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn  label="Confirmar" color="primary" v-close-popup :to="{name: 'AuthorsList' }" />
+                <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: 'AuthorsList' }" />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -42,7 +44,8 @@ export default {
     return {
       name: '',
       email: '',
-      confirmCancelData: false
+      confirmCancelData: false,
+      checkFilledFields: false
     }
   },
 
@@ -52,10 +55,11 @@ export default {
     }),
 
     addAuthorToList () {
-      if (this.name.length < 3 || this.name.length < 3) {
-
+      if (this.name.length < 3 || this.email.length < 3) {
+        this.checkFilledFields = true
       } else {
-        this.addAuthors({ name: this.name, email: this.email })
+        this.addAuthors({ name: this.name, email: this.email + '@gmail.com' })
+        this.checkFilledFields = false
 
         this.$q.notify({
           message: 'Autor criado com sucesso!',

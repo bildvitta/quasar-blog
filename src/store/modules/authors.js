@@ -3,9 +3,8 @@ const state = {
 }
 
 const getters = {
-  authorsList: state => {
-    return state.authors
-  }
+  authorsList: state => state.authors
+
 }
 
 const mutations = {

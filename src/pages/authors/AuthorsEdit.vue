@@ -13,10 +13,11 @@
         </div>
       </div>
       <div class="q-my-lg relative-position">
-        <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" />
-        <q-input outlined v-model="email" label="E-mail" />
+        <small class="text-negative" v-show="checkFilledFields" >Todos os campos devem ser preenchidos</small>
+        <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ val => val.length >= 3 || 'É necessário no mínimo 3 caracteres']" />
+        <q-input outlined v-model="email" label="E-mail" :rules="[ val => val.length >= 13 || 'E-mail digitado não é válido']" />
         <div class="q-my-lg">
-          <q-btn color="primary" label="Editar" @click='editListAuthor' />
+          <q-btn color="primary" label="Editar" @click="editListAuthor" />
           <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
         </div>
       </div>
@@ -27,7 +28,7 @@
               </q-card-section>
               <q-card-actions align="center">
                 <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn  label="Confirmar" color="primary" v-close-popup :to="{name: 'AuthorsList' }" />
+                <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: 'AuthorsList' }" />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -42,7 +43,8 @@ export default {
     return {
       name: '',
       email: '',
-      confirmCancelData: false
+      confirmCancelData: false,
+      checkFilledFields: false
     }
   },
 
@@ -52,8 +54,8 @@ export default {
     }),
 
     editListAuthor () {
-      if (this.name.length < 3 || this.name.length < 3) {
-
+      if (this.name.length < 3 || this.email.length < 13) {
+        this.checkFilledFields = true
       } else {
         const author = {
           values: {
@@ -63,6 +65,7 @@ export default {
           index: this.$route.params.id
         }
         this.editAuthor(author)
+        this.checkFilledFields = false
 
         this.$q.notify({
           message: 'Autor editado com sucesso!',
@@ -74,18 +77,26 @@ export default {
 
     confirmCancel () {
       this.confirmCancelData = true
+    },
+
+    loadInputValues () {
+      this.name = this.authors[this.idAuthor].name
+      this.email = this.authors[this.idAuthor].email
     }
   },
 
   computed: {
     ...mapGetters({
       authors: 'authors/authorsList'
-    })
+    }),
+
+    idAuthor () {
+      return this.$route.params.id
+    }
   },
 
   created () {
-    this.name = this.authors[this.$route.params.id].name
-    this.email = this.authors[this.$route.params.id].email
+    this.loadInputValues()
   }
 
 }

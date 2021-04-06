@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import authors from './module-example/authors'
+import authors from './modules/authors'
 
 Vue.use(Vuex)
 
