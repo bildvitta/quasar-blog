@@ -18,7 +18,7 @@
         <q-input v-model="text" label="Procurar" class="page-posts-list__search col" />
         <q-btn flat  color="primary" icon="filter_list" label="Filtrar">
           <q-menu>
-            <q-list style="min-width: 200px">
+            <q-list class="page-post-list__filter-options">
               <q-item>
                 <q-item-section>
                   <q-select v-model="author" :options='authorOptions' label="Autor" />

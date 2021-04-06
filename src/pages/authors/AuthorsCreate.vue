@@ -16,47 +16,57 @@
         <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" />
         <q-input outlined v-model="email" label="E-mail" />
         <div class="q-my-lg">
-          <q-btn color="primary" label="Criar"  @click="addAuthor" />
-          <q-btn color="primary" flat label="Cancelar" />
+          <q-btn color="primary" label="Criar" @click='addAuthorToList' />
+          <q-btn color="primary" flat label="Cancelar" @click='confirmCancel' />
         </div>
-      </div>
-      <hr>
-       <div class="full-width">
-        <q-list bordered class="rounded-borders q-mb-xs">
-          <q-item clickable v-ripple v-for="(author, index) in authors" :key="index" class="flex row items-center" >
-            <p class="q-mb-none col">{{ author.name }}</p>
-            <p class="q-mb-none col">{{ author.email }}</p>
-            <q-btn icon="edit" unelevated @click="removeAuthor(index)" />
-          </q-item>
-        </q-list>
+         <q-dialog v-model="confirmCancelData" persistent>
+            <q-card>
+              <q-card-section class="row items-center">
+                <span class="q-ml-sm">Deseja mesmo cancelar?</span>
+              </q-card-section>
+              <q-card-actions align="center">
+                <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                <q-btn  label="Confirmar" color="primary" v-close-popup :to="{name: 'AuthorsList' }" />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </div>
     </q-page>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
-      authors: [],
       name: '',
-      email: ''
+      email: '',
+      confirmCancelData: false
     }
   },
+
   methods: {
-    addAuthor () {
-      if (this.name === '' || this.email === '') {
+    ...mapActions({
+      addAuthors: 'authors/addAuthors'
+    }),
+
+    addAuthorToList () {
+      if (this.name.length < 3 || this.name.length < 3) {
 
       } else {
-        this.authors.push({
-          name: this.name,
-          email: this.email
+        this.addAuthors({ name: this.name, email: this.email })
+
+        this.$q.notify({
+          message: 'Autor criado com sucesso!',
+          type: 'positive'
         })
-        this.name = ''
-        this.email = ''
+        this.$router.push({ name: 'AuthorsList' })
       }
     },
-    removeAuthor (index) {
-      this.authors.splice(index, 1)
+
+    confirmCancel () {
+      this.confirmCancelData = true
     }
   }
 }
