@@ -1,5 +1,5 @@
-function validateRequiredFields (name) {
-  return !name ? 'Campo obrigatório' : undefined
+function validateRequiredFields (field) {
+  return !field ? 'Campo obrigatório' : undefined
 }
 
 function validateEmailFields (email) {

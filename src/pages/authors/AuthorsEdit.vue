@@ -13,8 +13,8 @@
         </div>
       </div>
       <div class="q-my-lg relative-position">
-        <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ val => validateRequiredFields(this.name) ]" />
-        <q-input outlined v-model="email" label="E-mail" :rules="[ val => validateEmailFields(this.email) ]" />
+        <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
+        <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
         <div class="q-my-lg">
           <q-btn :disable="validateForm" color="primary" label="Editar" @click="editListAuthor" />
           <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
@@ -64,7 +64,6 @@ export default {
         index: this.$route.params.id
       }
       this.editAuthor(author)
-      this.checkFilledFields = false
 
       this.$q.notify({
         message: 'Autor editado com sucesso!',
