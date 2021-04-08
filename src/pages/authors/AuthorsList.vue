@@ -28,12 +28,12 @@
             <q-btn flat icon="more_vert">
               <q-menu>
                 <q-list class="page-authors-list">
-                  <q-item clickable>
+                  <q-item>
                     <q-item-section>
                       <q-btn flat :to="{ name: 'AuthorsEdit', params: { id: index } }">Editar</q-btn>
                     </q-item-section>
                   </q-item>
-                  <q-item clickable>
+                  <q-item>
                     <q-item-section>
                       <q-btn flat class="text-red" @click="confirmDelete">Excluir</q-btn>
                       <q-dialog v-model="confirmDeleteData" persistent>
