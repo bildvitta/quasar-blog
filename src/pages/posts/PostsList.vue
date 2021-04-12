@@ -11,7 +11,7 @@
             </q-breadcrumbs>
           </div>
         </div>
-        <q-btn icon="add" unelevated rounded color="primary" label="Adicionar post" :to="{ name: 'PostsCreate'}" />
+        <q-btn icon="add" unelevated rounded color="primary" label="Adicionar post" :to="{ name: 'PostsCreate' }" />
       </div>
 
       <div class="flex q-my-lg justify-between">
@@ -58,57 +58,38 @@
         </q-btn>
       </div>
     </div>
-
-    <div class="row q-col-gutter-md full-width">
-      <div class="col-sm-3 col-12">
-        <card-post />
+    <div class="row q-col-gutter-md full-width q-my-lg">
+      <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-post-list__card">
+        <card-post :urlMainImage="post.urlMainImage" :category="post.category" :title="post.title" :shortDescription="post.shortDescription" :authorName="post.authorName" :postDate="post.postDate" :index="index" />
       </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-      <div class="col-sm-3 col-12">
-        <card-post />
-      </div>
-
     </div>
 
-    <div class="q-pa-lg flex flex-center">
-    <q-pagination v-model="current" :max="5" direction-links boundary-links icon-first="skip_previous"
+    <div v-if="postsList.length > 8" class="q-pa-lg flex flex-center">
+      <q-pagination v-model="current" :max="5" direction-links boundary-links icon-first="skip_previous"
       icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" />
-  </div>
-  </q-page>
+    </div>
 
+    <div v-else-if="postsList.length < 1" class="flex flex-center q-pt-xl">
+      Até o momento nenhuma postagem foi adicionada
+    </div>
+  </q-page>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import CardPost from 'src/components/CardPost.vue'
 
 export default {
-
   components: {
     CardPost
   },
 
   data () {
     return {
+      card: {
+        postDate: ''
+      },
+
       current: '1',
       text: '',
       model: '',
@@ -120,12 +101,18 @@ export default {
       data: '',
       date: '2019/02/01'
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      postsList: 'posts/postsList'
+    })
   }
 }
 </script>
 
 <style lang="scss">
-  .page-posts-list{
+  .page-post-list{
     &__card:nth-child(4n+1){
       padding-left: 0;
     }

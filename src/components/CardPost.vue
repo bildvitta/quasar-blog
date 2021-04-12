@@ -1,31 +1,78 @@
 <template>
-  <div class="card-post full-width">
+  <div class="card-post full-width relative-position">
     <div class="card-post__image">
-      <img src="https://blog.emania.com.br/wp-content/uploads/2019/01/como-tirar-foto-de-cachorro-foco-1024x670.jpg" alt="cachorro">
-      <p><span class="card-post__category">Categoria</span></p>
+      <img :src="urlMainImage" :alt="title" >
+      <p><span class="card-post__category">{{ category }}</span></p>
     </div>
 
     <div>
-      <h1>Titulo</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.</p>
+      <h1 class="ellipsis">{{ title }}</h1>
+      <p class="ellipsis-3-lines">{{ shortDescription }}.</p>
     </div>
 
-    <div>
-      <div class="card-post__author">
-        <img src="https://media-exp1.licdn.com/dms/image/C4D03AQGH0reuYDLSlA/profile-displayphoto-shrink_200_200/0/1613651082514?e=1622073600&v=beta&t=R46px1RFUYurcLxxEwo-x9_3O75hqDhhxxAywmLALYg" alt="autor">
-        <div>
-          <p><span>Nome autor</span></p>
-          <p>Data de postagem: <span>19/07/2019</span></p>
-        </div>
+    <div class="card-post__author">
+      <div>
+        <p><span>{{ authorName }}</span></p>
+        <p>Data de postagem: <span>{{ postDate }}</span></p>
       </div>
     </div>
 
+    <q-btn class="card-post__edit" flat icon="edit">
+        <q-menu>
+          <q-list class="page-authors-list">
+            <q-item>
+              <q-item-section>
+                <q-btn flat :to="{ name: 'PostsEdit', params: { id: index } }">Editar</q-btn>
+                <q-btn flat text-color="negative" @click="confirmDelete">Excluir</q-btn>
+                <q-dialog v-model="confirmDeleteData" persistent>
+                  <q-card>
+                    <q-card-section class="row items-center">
+                      <span class="q-ml-sm">Quer realmente excluir o post?</span>
+                    </q-card-section>
+
+                    <q-card-actions align="center">
+                      <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                      <q-btn label="Confirmar" color="primary" v-close-popup @click="deletePost(index)" />
+                    </q-card-actions>
+                  </q-card>
+                </q-dialog>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
   </div>
 </template>
 
 <script>
-export default {
+import { mapActions } from 'vuex'
 
+export default {
+  props: ['urlMainImage', 'category', 'title', 'shortDescription', 'authorName', 'postDate', 'index'],
+
+  data () {
+    return {
+      confirmDeleteData: false
+    }
+  },
+
+  methods: {
+    ...mapActions({
+      removePost: 'posts/removePost'
+    }),
+
+    confirmDelete () {
+      this.confirmDeleteData = true
+    },
+
+    deletePost (index) {
+      this.removePost(index)
+      this.$q.notify({
+        message: 'Post excluido com sucesso!',
+        type: 'positive'
+      })
+    }
+  }
 }
 </script>
 
@@ -69,16 +116,9 @@ export default {
     }
 
     &__author{
-      display: flex;
-      justify-content: initial;
-      align-items: center;
-      margin: 20px 10px 10px 10px;
-
-      & > img{
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-      }
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
 
       & p{
         font-size: 10px;
@@ -87,6 +127,12 @@ export default {
           color: $primary;
         }
       }
+    }
+
+    &__edit{
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
     }
   }
 </style>

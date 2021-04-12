@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import authors from './modules/authors'
+import posts from './modules/posts'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      authors
+      authors,
+      posts
     },
 
     // enable strict mode (adds overhead!)

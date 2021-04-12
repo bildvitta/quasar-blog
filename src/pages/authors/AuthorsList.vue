@@ -35,7 +35,7 @@
                   </q-item>
                   <q-item>
                     <q-item-section>
-                      <q-btn flat class="text-red" @click="confirmDelete">Excluir</q-btn>
+                      <q-btn flat class="negative" @click="confirmDelete">Excluir</q-btn>
                       <q-dialog v-model="confirmDeleteData" persistent>
                         <q-card>
                           <q-card-section class="row items-center">
@@ -70,6 +70,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      titulo: 'teste',
       text: '',
       confirmDeleteData: false
     }
