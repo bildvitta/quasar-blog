@@ -35,7 +35,7 @@
                   </q-item>
                   <q-item>
                     <q-item-section>
-                      <q-btn flat class="negative" @click="confirmDelete">Excluir</q-btn>
+                      <q-btn flat color="negative" @click="confirmDelete">Excluir</q-btn>
                       <q-dialog v-model="confirmDeleteData" persistent>
                         <q-card>
                           <q-card-section class="row items-center">

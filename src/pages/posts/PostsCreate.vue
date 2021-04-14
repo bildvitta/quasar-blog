@@ -1,35 +1,30 @@
 <template>
     <q-page class="bg-grey-2 q-pa-lg">
-
-      <div class="flex justify-between">
-        <div>
-          <p class="text-h5 q-mb-xs">Criar Postagem</p>
-          <div>
-            <q-breadcrumbs>
-              <q-breadcrumbs-el label="Home" />
-              <q-breadcrumbs-el label="Postagens" />
-              <q-breadcrumbs-el label="Criar postagem" />
-            </q-breadcrumbs>
-          </div>
-        </div>
+      <div>
+        <p class="text-h5 q-mb-xs">Criar Postagem</p>
+        <q-breadcrumbs>
+          <q-breadcrumbs-el label="Home" />
+          <q-breadcrumbs-el label="Postagens" />
+          <q-breadcrumbs-el label="Criar postagem" />
+        </q-breadcrumbs>
       </div>
-      <div class="q-my-lg relative-position">
+
+      <div class="q-my-lg">
         <q-input class="q-mb-md" outlined v-model="urlMainImage" label="Insira o link da imagem principal*" :rules="[ validateRequiredFields ]" />
         <q-input class="q-mb-md" outlined v-model="title" label="Informe o título*" :rules="[ validateRequiredFields ]" />
         <q-input class="q-mb-md" outlined v-model="shortDescription" label="Informe uma pequena descrição*" :rules="[ validateRequiredFields ]" />
 
         <div class="flex items-center q-mb-lg">
-          <q-select class="col q-mr-sm" outlined v-model="selectedAuthor" :options="optionsAuthors" label="Escolha o autor*" :rules="[ validateRequiredFields ]" />
-          <q-select class="col q-ml-sm" outlined v-model="selectedCategory" :options="optionsCategory" label="Informe a categoria da postagem*" :rules="[ validateRequiredFields ]" />
+          <q-select class="col q-mr-sm" outlined v-model="selectedAuthor" :options="authorsOptions" label="Escolha o autor*" :rules="[ validateRequiredFields ]" />
+          <q-select class="col q-ml-sm" outlined v-model="selectedCategory" :options="categoryOptions" label="Informe a categoria da postagem*" :rules="[ validateRequiredFields ]" />
         </div>
 
         <q-editor class="q-my-lg bg-grey-2" v-model="mainText" :definitions="{ bold: {label: 'Bold', icon: null} }"/>
+
         <div class="q-my-lg">
           <q-btn :disable="validateForm" color="primary" label="Criar" @click="addPostToList" />
           <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
-        </div>
-
-        <q-dialog v-model="confirmCancelData" persistent>
+          <q-dialog v-model="confirmCancelData" persistent>
             <q-card>
               <q-card-section class="row items-center">
                 <span class="q-ml-sm">Deseja mesmo cancelar?</span>
@@ -39,15 +34,15 @@
                 <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: 'PostsList' }" />
               </q-card-actions>
             </q-card>
-        </q-dialog>
+          </q-dialog>
+        </div>
       </div>
-
     </q-page>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { validateRequiredFields } from 'helpers'
+import { validateRequiredFields, formatDateTime } from 'helpers'
 
 export default {
   data () {
@@ -56,9 +51,8 @@ export default {
       title: '',
       shortDescription: '',
       selectedAuthor: '',
-      optionsAuthors: ['Autor 1', 'Autor 2', 'Autor 3'],
       selectedCategory: '',
-      optionsCategory: ['Esportes', 'Tecnologia', 'Culinária', 'Mercado Financeiro', 'Animais', 'Brasil', 'Exterior', 'Outros'],
+      categoryOptions: ['Esportes', 'Tecnologia', 'Culinária', 'Mercado Financeiro', 'Animais', 'Brasil', 'Exterior', 'Outros'],
       postDate: '',
       mainText: '',
 
@@ -73,10 +67,11 @@ export default {
 
     validateRequiredFields,
 
+    formatDateTime,
+
     addPostToList () {
-      const day = new Date()
-      this.postDate = day.getDate() + '/' + (day.getMonth() + 1) + '/' + day.getFullYear()
-      this.addPost({ urlMainImage: this.urlMainImage, category: this.selectedCategory, title: this.title, shortDescription: this.shortDescription, authorName: this.selectedAuthor, postDate: this.postDate })
+      this.postDate = formatDateTime(new Date())
+      this.addPost({ urlMainImage: this.urlMainImage, category: this.selectedCategory, title: this.title, shortDescription: this.shortDescription, authorName: this.selectedAuthor, postDate: this.postDate, mainText: this.mainText })
 
       this.$q.notify({
         message: 'Post criado com sucesso!',
@@ -95,10 +90,14 @@ export default {
       authorsList: 'authors/authorsList'
     }),
 
+    authorsOptions () {
+      return this.authorsList.map(author => author.name)
+    },
+
     validateForm () {
       return !!(this.validateRequiredFields(this.urlMainImage) || (this.validateRequiredFields(this.title)) ||
       (this.validateRequiredFields(this.shortDescription)) || (this.validateRequiredFields(this.selectedAuthor)) ||
-      (this.validateRequiredFields(this.selectedCategory)))
+      (this.validateRequiredFields(this.selectedCategory)) || (this.validateRequiredFields(this.mainText)))
     }
   }
 }

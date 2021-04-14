@@ -15,42 +15,42 @@
       </div>
 
       <div class="flex q-my-lg justify-between">
-        <q-input v-model="text" label="Procurar" class="page-posts-list__search col" />
-        <q-btn flat  color="primary" icon="filter_list" label="Filtrar">
+        <q-input v-model="searchText" label="Procurar" class="page-posts-list__search col" />
+        <q-btn flat color="primary" icon="filter_list" label="Filtrar">
           <q-menu>
             <q-list class="page-post-list__filter-options">
               <q-item>
                 <q-item-section>
-                  <q-select v-model="author" :options='authorOptions' label="Autor" />
+                  <q-select v-model="selectedAuthor" :options='authorsOptions' label="Autor" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-select v-model="category" :options='categoryOptions' label="Categoria" />
+                  <q-select v-model="selectedCategory" :options='categoryOptions' label="Categoria" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-select v-model="data" :options='dataOptions' label="Data" />
-                  <q-input filled v-model="date" mask="date" :rules="['date']" class="q-mt-md">
-                      <template v-slot:append>
-                        <q-icon name="event" class="cursor-pointer">
-                          <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                            <q-date v-model="date">
-                              <div class="row items-center justify-end">
-                                <q-btn v-close-popup label="Close" color="primary" flat />
-                              </div>
-                            </q-date>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
+                  <q-select v-model="selectedDate" :options='dataOptions' label="Data" />
+                  <q-input filled v-model="calendarDate" mask="date" :rules="['date']" class="q-mt-md">
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                          <q-date v-model="calendarDate">
+                            <div class="row items-center justify-end">
+                              <q-btn v-close-popup label="Close" color="primary" flat />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
                    </q-input>
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-btn color="primary" label="Filtrar" />
-                  <q-btn color="primary" flat label="Limpar" />
+                  <q-btn color="primary" flat label="Limpar" @click="cleanFilters" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -60,23 +60,50 @@
     </div>
     <div class="row q-col-gutter-md full-width q-my-lg">
       <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-post-list__card">
-        <card-post :urlMainImage="post.urlMainImage" :category="post.category" :title="post.title" :shortDescription="post.shortDescription" :authorName="post.authorName" :postDate="post.postDate" :index="index" />
+        <card-post :content="post" @click="acessPost(index)">
+          <template v-slot:actions>
+            <q-btn class="page-post-list__edit" flat icon="edit">
+              <q-menu>
+                <q-list>
+                  <q-item>
+                    <q-item-section>
+                      <q-btn flat :to="{ name: 'PostsEdit', params: { id: index } }">Editar</q-btn>
+                      <q-btn flat text-color="negative" @click="confirmDelete">Excluir</q-btn>
+                      <q-dialog v-model="confirmDeleteData" persistent>
+                        <q-card>
+                          <q-card-section class="row items-center">
+                            <span class="q-ml-sm">Quer realmente excluir o post?</span>
+                          </q-card-section>
+
+                          <q-card-actions align="center">
+                            <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deletePost(index)" />
+                          </q-card-actions>
+                        </q-card>
+                      </q-dialog>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </template>
+        </card-post>
       </div>
     </div>
 
-    <div v-if="postsList.length > 8" class="q-pa-lg flex flex-center">
-      <q-pagination v-model="current" :max="5" direction-links boundary-links icon-first="skip_previous"
+    <div v-if="checkListSizeForPagination()" class="q-pa-lg flex flex-center">
+      <q-pagination v-model="currentPage" :max="5" direction-links boundary-links icon-first="skip_previous"
       icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" />
     </div>
 
-    <div v-else-if="postsList.length < 1" class="flex flex-center q-pt-xl">
+    <div v-else-if="!postsList.length" class="flex flex-center q-pt-xl">
       Até o momento nenhuma postagem foi adicionada
     </div>
   </q-page>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import CardPost from 'src/components/CardPost.vue'
 
 export default {
@@ -86,27 +113,68 @@ export default {
 
   data () {
     return {
-      card: {
-        postDate: ''
-      },
-
-      current: '1',
-      text: '',
-      model: '',
-      categoryOptions: ['Categoria 1', 'Categoria 2'],
-      authorOptions: ['Autor 1', 'Autor 2', 'Autor 3'],
+      currentPage: '1',
+      searchText: '',
       dataOptions: ['Mais recentes', 'Mais antigos'],
-      author: '',
-      category: '',
-      data: '',
-      date: '2019/02/01'
+      categoryOptions: [
+        'Esportes',
+        'Tecnologia',
+        'Culinária', 'Mercado Financeiro',
+        'Animais',
+        'Brasil',
+        'Exterior',
+        'Outros'],
+      selectedAuthor: '',
+      selectedCategory: '',
+      selectedDate: '',
+      calendarDate: '',
+
+      confirmDeleteData: false
+    }
+  },
+
+  methods: {
+    ...mapActions({
+      removePost: 'posts/removePost'
+    }),
+
+    confirmDelete () {
+      this.confirmDeleteData = true
+    },
+
+    deletePost (index) {
+      this.removePost(index)
+      this.$q.notify({
+        message: 'Post excluido com sucesso!',
+        type: 'positive'
+      })
+    },
+
+    acessPost (index) {
+      this.$router.push({ name: 'PostsSingle', params: { id: index } })
+    },
+
+    checkListSizeForPagination () {
+      return this.postsList.length > 8
+    },
+
+    cleanFilters () {
+      this.selectedAuthor = ''
+      this.selectedCategory = ''
+      this.calendarDate = ''
+      this.selectedDate = ''
     }
   },
 
   computed: {
     ...mapGetters({
-      postsList: 'posts/postsList'
-    })
+      postsList: 'posts/postsList',
+      authorsList: 'authors/authorsList'
+    }),
+
+    authorsOptions () {
+      return this.authorsList.map(author => author.name)
+    }
   }
 }
 </script>
@@ -115,6 +183,12 @@ export default {
   .page-post-list{
     &__card:nth-child(4n+1){
       padding-left: 0;
+    }
+
+    &__edit{
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
     }
   }
 </style>
