@@ -1,5 +1,5 @@
 import { validateRequiredFields, validateEmailFields } from './methods/validateFields'
-import { formatDateTime } from './methods/formatDateTime'
+import formatDateTime from './methods/formatDateTime'
 
 export {
   validateRequiredFields,

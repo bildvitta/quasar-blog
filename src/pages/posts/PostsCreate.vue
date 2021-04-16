@@ -10,31 +10,25 @@
       </div>
 
       <div class="q-my-lg">
-        <q-input class="q-mb-md" outlined v-model="urlMainImage" label="Insira o link da imagem principal*" :rules="[ validateRequiredFields ]" />
-        <q-input class="q-mb-md" outlined v-model="title" label="Informe o título*" :rules="[ validateRequiredFields ]" />
-        <q-input class="q-mb-md" outlined v-model="shortDescription" label="Informe uma pequena descrição*" :rules="[ validateRequiredFields ]" />
+        <q-input class="q-mb-md" outlined v-model="values.mainImageURL" label="Insira o link da imagem principal*"
+        :rules="[validateRequiredFields]" />
+        <q-input class="q-mb-md" outlined v-model="values.title" label="Informe o título*"
+        :rules="[validateRequiredFields]" />
+        <q-input class="q-mb-md" outlined v-model="values.shortDescription" label="Informe uma pequena descrição*"
+        :rules="[validateRequiredFields]" />
 
         <div class="flex items-center q-mb-lg">
-          <q-select class="col q-mr-sm" outlined v-model="selectedAuthor" :options="authorsOptions" label="Escolha o autor*" :rules="[ validateRequiredFields ]" />
-          <q-select class="col q-ml-sm" outlined v-model="selectedCategory" :options="categoryOptions" label="Informe a categoria da postagem*" :rules="[ validateRequiredFields ]" />
+          <q-select class="col q-mr-sm" outlined v-model="values.authorName" :options="authorsOptions"
+          label="Escolha o autor*" :rules="[validateRequiredFields]" />
+          <q-select class="col q-ml-sm" outlined v-model="values.category" :options="values.categoryOptions"
+          label="Informe a categoria da postagem*" :rules="[validateRequiredFields]" />
         </div>
 
-        <q-editor class="q-my-lg bg-grey-2" v-model="mainText" :definitions="{ bold: {label: 'Bold', icon: null} }"/>
+        <q-editor class="q-my-lg bg-grey-2" v-model="values.mainText" />
 
-        <div class="q-my-lg">
+        <div class="q-my-lg flex">
           <q-btn :disable="validateForm" color="primary" label="Criar" @click="addPostToList" />
-          <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
-          <q-dialog v-model="confirmCancelData" persistent>
-            <q-card>
-              <q-card-section class="row items-center">
-                <span class="q-ml-sm">Deseja mesmo cancelar?</span>
-              </q-card-section>
-              <q-card-actions align="center">
-                <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: 'PostsList' }" />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
+          <modal-cancel pageToAccess="PostsList" />
         </div>
       </div>
     </q-page>
@@ -43,26 +37,40 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { validateRequiredFields, formatDateTime } from 'helpers'
+import modalCancel from 'src/components/modalCancel.vue'
 
 export default {
+  components: {
+    modalCancel
+  },
+
   data () {
     return {
-      urlMainImage: '',
-      title: '',
-      shortDescription: '',
-      selectedAuthor: '',
-      selectedCategory: '',
-      categoryOptions: ['Esportes', 'Tecnologia', 'Culinária', 'Mercado Financeiro', 'Animais', 'Brasil', 'Exterior', 'Outros'],
-      postDate: '',
-      mainText: '',
-
-      confirmCancelData: false
+      values: {
+        mainImageURL: '',
+        title: '',
+        shortDescription: '',
+        authorName: '',
+        category: '',
+        categoryOptions: [
+          'Esportes',
+          'Tecnologia',
+          'Culinária',
+          'Mercado Financeiro',
+          'Animais',
+          'Brasil',
+          'Exterior',
+          'Outros'
+        ],
+        postDate: '',
+        mainText: ''
+      }
     }
   },
 
   methods: {
     ...mapActions({
-      addPost: 'posts/addPost'
+      setPost: 'posts/setPost'
     }),
 
     validateRequiredFields,
@@ -70,18 +78,15 @@ export default {
     formatDateTime,
 
     addPostToList () {
-      this.postDate = formatDateTime(new Date())
-      this.addPost({ urlMainImage: this.urlMainImage, category: this.selectedCategory, title: this.title, shortDescription: this.shortDescription, authorName: this.selectedAuthor, postDate: this.postDate, mainText: this.mainText })
+      this.values.postDate = formatDateTime()
+      this.setPost(this.values)
 
       this.$q.notify({
         message: 'Post criado com sucesso!',
         type: 'positive'
       })
-      this.$router.push({ name: 'PostsList' })
-    },
 
-    confirmCancel () {
-      this.confirmCancelData = true
+      this.$router.push({ name: 'PostsList' })
     }
   },
 
@@ -95,9 +100,9 @@ export default {
     },
 
     validateForm () {
-      return !!(this.validateRequiredFields(this.urlMainImage) || (this.validateRequiredFields(this.title)) ||
-      (this.validateRequiredFields(this.shortDescription)) || (this.validateRequiredFields(this.selectedAuthor)) ||
-      (this.validateRequiredFields(this.selectedCategory)) || (this.validateRequiredFields(this.mainText)))
+      return !!(this.validateRequiredFields(this.values.mainImageURL) || (this.validateRequiredFields(this.values.title)) ||
+      (this.validateRequiredFields(this.values.shortDescription)) || (this.validateRequiredFields(this.values.authorName)) ||
+      (this.validateRequiredFields(this.values.category)) || (this.validateRequiredFields(this.values.mainText)))
     }
   }
 }

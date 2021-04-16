@@ -1,32 +1,17 @@
 <template>
     <q-page class="bg-grey-2 q-pa-lg">
-      <div class="flex justify-between">
-        <div>
-          <p class="text-h5 q-mb-xs">Editar Postagem</p>
-          <q-breadcrumbs>
-            <q-breadcrumbs-el label="Home" />
-            <q-breadcrumbs-el label="Postagens" />
-            <q-breadcrumbs-el label="Editar postagem" />
-          </q-breadcrumbs>
-        </div>
-        <q-btn icon="delete" label="Deletar post" flat color="negative" @click="confirmDelete" />
-        <q-dialog v-model="confirmDeleteData" persistent>
-          <q-card>
-            <q-card-section class="row items-center">
-              <span class="q-ml-sm">Quer realmente excluir o post?</span>
-            </q-card-section>
-
-            <q-card-actions align="center">
-              <q-btn flat label="Cancelar" color="primary" v-close-popup />
-              <q-btn label="Confirmar" color="primary" v-close-popup @click="deletePost" />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+      <div>
+        <p class="text-h5 q-mb-xs">{{ definitionOfPageName }}</p>
+        <q-breadcrumbs>
+          <q-breadcrumbs-el label="Home" />
+          <q-breadcrumbs-el label="Postagens" />
+          <q-breadcrumbs-el>{{ definitionOfPageName }}</q-breadcrumbs-el>
+        </q-breadcrumbs>
       </div>
 
       <div class="q-my-lg">
         <q-input class="q-mb-md" outlined v-model="values.mainImageURL" label="Insira o link da imagem principal*"
-        :rules="[ validateRequiredFields ]" />
+        :rules="[validateRequiredFields]" />
         <q-input class="q-mb-md" outlined v-model="values.title" label="Informe o título*"
         :rules="[validateRequiredFields]" />
         <q-input class="q-mb-md" outlined v-model="values.shortDescription" label="Informe uma pequena descrição*"
@@ -40,8 +25,9 @@
         </div>
 
         <q-editor class="q-my-lg bg-grey-2" v-model="values.mainText" />
+
         <div class="q-my-lg flex">
-          <q-btn :disable="validateForm" color="primary" label="Editar" @click="editPostList" />
+          <q-btn :disable="validateForm" color="primary" @click="saveAction">{{ buttonNameToSave }}</q-btn>
           <modal-cancel pageToAccess="PostsList" />
         </div>
       </div>
@@ -67,6 +53,7 @@ export default {
         shortDescription: '',
         authorName: '',
         category: '',
+        mainText: '',
         categoryOptions: [
           'Esportes',
           'Tecnologia',
@@ -76,10 +63,7 @@ export default {
           'Brasil',
           'Exterior',
           'Outros'
-        ],
-        postDate: '',
-        editDate: '',
-        mainText: ''
+        ]
       },
       confirmDeleteData: false
     }
@@ -88,12 +72,26 @@ export default {
   methods: {
     ...mapActions({
       removePost: 'posts/removePost',
-      editPost: 'posts/editPost'
+      editPost: 'posts/editPost',
+      setPost: 'posts/setPost'
     }),
 
     validateRequiredFields,
 
     formatDateTime,
+
+    addPostToList () {
+      this.values.postDate = formatDateTime()
+
+      this.setPost(this.values)
+
+      this.$q.notify({
+        message: 'Post criado com sucesso!',
+        type: 'positive'
+      })
+
+      this.$router.push({ name: 'PostsList' })
+    },
 
     editPostList () {
       this.values.editDate = formatDateTime()
@@ -112,16 +110,18 @@ export default {
       this.$router.push({ name: 'PostsList' })
     },
 
-    confirmDelete () {
-      this.confirmDeleteData = true
+    saveAction () {
+      this.isCreate ? this.addPostToList() : this.editPostList()
     },
 
     deletePost () {
       this.removePost(this.postId)
+
       this.$q.notify({
         message: 'Post excluido com sucesso!',
         type: 'positive'
       })
+
       this.$router.push({ name: 'PostsList' })
     },
 
@@ -136,23 +136,41 @@ export default {
       authorsList: 'authors/authorsList'
     }),
 
-    validateForm () {
-      return !!(this.validateRequiredFields(this.values.mainImageURL) || (this.validateRequiredFields(this.values.title)) ||
-      (this.validateRequiredFields(this.values.shortDescription)) || (this.validateRequiredFields(this.values.authorName)) ||
-      (this.validateRequiredFields(this.values.category)))
+    definitionOfPageName () {
+      return this.isCreate ? 'Criar Postagem' : 'Editar postagem'
+    },
+
+    buttonNameToSave () {
+      return this.isCreate ? 'Criar' : 'Editar'
+    },
+
+    authorsOptions () {
+      return this.authorsList.map(author => author.name)
+    },
+
+    isCreate () {
+      return this.$route.name === 'PostsCreate'
     },
 
     postId () {
       return this.$route.params.id
     },
 
-    authorsOptions () {
-      return this.authorsList.map(author => author.name)
+    validateForm () {
+      for (var key in this.values) {
+        if (this.validateRequiredFields(this.values[key]) === 'Campo obrigatório') {
+          return true
+        }
+      }
+
+      return false
     }
   },
 
   created () {
-    this.setInputValues()
+    if (!this.isCreate) {
+      this.setInputValues()
+    }
   }
 }
 </script>

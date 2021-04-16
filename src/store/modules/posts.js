@@ -21,7 +21,7 @@ const mutations = {
 }
 
 const actions = {
-  addPost ({ commit }, value) {
+  setPost ({ commit }, value) {
     commit('setPost', value)
   },
 

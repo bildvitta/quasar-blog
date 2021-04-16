@@ -22,7 +22,7 @@
             <div class="q-mb-none col">E-mail</div>
             <div></div>
           </div>
-          <q-item clickable v-ripple v-for="(author, index) in authorsList" :key="index" class="flex row items-center" >
+          <q-item clickable v-ripple v-for="(author, id) in authorsList" :key="id" class="flex row items-center" >
             <p class="q-mb-none col">{{ author.name }}</p>
             <p class="q-mb-none col">{{ author.email }}</p>
             <q-btn flat icon="more_vert">
@@ -30,7 +30,7 @@
                 <q-list class="page-authors-list">
                   <q-item>
                     <q-item-section>
-                      <q-btn flat :to="{ name: 'AuthorsEdit', params: { id: index } }">Editar</q-btn>
+                      <q-btn flat :to="{ name: 'AuthorsEdit', params: { id } }">Editar</q-btn>
                     </q-item-section>
                   </q-item>
                   <q-item>
@@ -44,7 +44,7 @@
 
                           <q-card-actions align="center">
                             <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteAuthor(index)" />
+                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteAuthor(id)" />
                           </q-card-actions>
                         </q-card>
                       </q-dialog>
@@ -70,7 +70,6 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      titulo: 'teste',
       text: '',
       confirmDeleteData: false
     }
@@ -87,8 +86,8 @@ export default {
       removeAuthor: 'authors/removeAuthor'
     }),
 
-    deleteAuthor (index) {
-      this.removeAuthor(index)
+    deleteAuthor (id) {
+      this.removeAuthor(id)
       this.$q.notify({
         message: 'Autor excluido com sucesso!',
         type: 'positive'
