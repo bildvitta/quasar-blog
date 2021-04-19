@@ -12,8 +12,8 @@
       </div>
 
       <div class="card-post__author">
-        <p class="card-post__author-name">Feito por <span class="card-post__author-name card-post__author-name--primary-color">{{ content.authorName }}</span></p>
-        <p class="card-post__author-name">Data de postagem: <span class="card-post__author-name card-post__author-name--primary-color">{{ content.postDate }}</span></p>
+        <p class="q-mb-none">Feito por <span class="text-primary">{{ content.authorName }}</span></p>
+        <p class="q-mb-none">Data de postagem: <span class="text-primary">{{ content.postDate }}</span></p>
       </div>
     </div>
     <slot name="actions" />
@@ -38,11 +38,11 @@ export default {
     border-radius: 30px;
 
     &:hover {
-      background-color: rgb(243, 243, 243);
+      background-color: #f3f3f3
     }
 
     &__image-container {
-        height: 50%;
+      height: 50%;
     }
 
     &__image {
@@ -77,14 +77,5 @@ export default {
       left: 10px;
       font-size: 10px;
     }
-
-    &__author-name{
-      margin-bottom: 0;
-
-      &--primary-color {
-      color: $primary;
-    }
-    }
-
   }
 </style>
