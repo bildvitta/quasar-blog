@@ -15,30 +15,24 @@
       <div class="q-my-lg relative-position">
         <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
-        <div class="q-my-lg">
+        <div class="q-my-lg flex">
           <q-btn :disable="validateForm" color="primary" label="Editar" @click="editListAuthor" />
-          <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
+          <modal-cancel hasPagination="AuthorsList" />
         </div>
       </div>
-      <q-dialog v-model="confirmCancelData" persistent>
-            <q-card>
-              <q-card-section class="row items-center">
-                <span class="q-ml-sm">Deseja mesmo cancelar?</span>
-              </q-card-section>
-              <q-card-actions align="center">
-                <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: 'AuthorsList' }" />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
     </q-page>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
+import modalCancel from 'src/components/modalCancel.vue'
 
 export default {
+  components: {
+    modalCancel
+  },
+
   data () {
     return {
       name: '',
@@ -76,9 +70,9 @@ export default {
       this.confirmCancelData = true
     },
 
-    loadInputValues () {
-      this.name = this.authors[this.idAuthor].name
-      this.email = this.authors[this.idAuthor].email
+    setInputValues () {
+      this.name = this.authors[this.authorId].name
+      this.email = this.authors[this.authorId].email
     }
   },
 
@@ -87,7 +81,7 @@ export default {
       authors: 'authors/authorsList'
     }),
 
-    idAuthor () {
+    authorId () {
       return this.$route.params.id
     },
 
@@ -97,7 +91,7 @@ export default {
   },
 
   created () {
-    this.loadInputValues()
+    this.setInputValues()
   }
 
 }

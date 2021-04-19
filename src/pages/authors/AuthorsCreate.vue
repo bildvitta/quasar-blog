@@ -15,22 +15,10 @@
       <div class="q-my-lg relative-position">
         <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
-        <div class="q-my-lg">
+        <div class="q-my-lg flex">
           <q-btn :disable="validateForm" color="primary" label="Criar" @click="addAuthorToList" />
-          <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
+          <modal-cancel hasPagination="AuthorsList" />
         </div>
-
-         <q-dialog v-model="confirmCancelData" persistent>
-            <q-card>
-              <q-card-section class="row items-center">
-                <span class="q-ml-sm">Deseja mesmo cancelar?</span>
-              </q-card-section>
-              <q-card-actions align="center">
-                <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: 'AuthorsList' }" />
-              </q-card-actions>
-            </q-card>
-        </q-dialog>
       </div>
     </q-page>
 </template>
@@ -38,8 +26,13 @@
 <script>
 import { mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
+import modalCancel from 'src/components/modalCancel'
 
 export default {
+  components: {
+    modalCancel
+  },
+
   data () {
     return {
       name: '',
