@@ -62,7 +62,7 @@
       <div v-for="(post, id) in postsList" :key="id" class="col-sm-3 col-12 page-posts-list__card">
         <card-post :content="post" @click="acessPost(id)">
           <template v-slot:actions>
-            <q-btn class="page-posts-list__edit-button" flat icon="edit">
+            <q-btn class="page-posts-list__edit-button absolute" flat icon="edit">
               <q-menu>
                 <q-list>
                   <q-item>
@@ -91,7 +91,7 @@
       </div>
     </div>
 
-    <div v-if="checkListSizeForPagination" class="q-pa-lg flex flex-center">
+    <div v-if="hasPagination" class="q-pa-lg flex flex-center">
       <q-pagination v-model="currentPage" :max="5" direction-links boundary-links icon-first="skip_previous"
       icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" />
     </div>
@@ -159,7 +159,7 @@ export default {
     },
 
     clearFilters () {
-      for (var objKey in this.selectedValues) {
+      for (const objKey in this.selectedValues) {
         this.selectedValues[objKey] = ''
       }
     }
@@ -175,7 +175,7 @@ export default {
       return this.authorsList.map(author => author.name)
     },
 
-    checkListSizeForPagination () {
+    hasPagination () {
       return this.postsList.length > 8
     }
   }
@@ -189,7 +189,6 @@ export default {
     }
 
     &__edit-button {
-      position: absolute;
       bottom: 10px;
       right: 10px;
     }

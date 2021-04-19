@@ -17,7 +17,7 @@
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
         <div class="q-my-lg flex">
           <q-btn :disable="validateForm" color="primary" label="Criar" @click="addAuthorToList" />
-          <modal-cancel pageToAccess="AuthorsList" />
+          <modal-cancel hasPagination="AuthorsList" />
         </div>
       </div>
     </q-page>
@@ -26,7 +26,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
-import modalCancel from 'src/components/modalCancel.vue'
+import modalCancel from 'src/components/modalCancel'
 
 export default {
   components: {

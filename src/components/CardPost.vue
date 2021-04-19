@@ -1,7 +1,7 @@
 <template>
   <div class="card-post full-width relative-position">
     <div class="cursor-pointer" v-on="$listeners">
-      <div class="card-post__main-area relative-position">
+      <div class="card-post__image-container relative-position">
         <img class="card-post__image" :src="content.mainImageURL" :alt="content.title">
         <p class="card-post__category absolute-top-right">{{ content.category }}</p>
       </div>
@@ -12,8 +12,8 @@
       </div>
 
       <div class="card-post__author">
-        <p class="card-post__author-name">Feito por <span class="card-post__author-name--primary-color">{{ content.authorName }}</span></p>
-        <p class="card-post__author-name">Data de postagem: <span class="card-post__author-name--primary-color">{{ content.postDate }}</span></p>
+        <p class="card-post__author-name">Feito por <span class="card-post__author-name card-post__author-name--primary-color">{{ content.authorName }}</span></p>
+        <p class="card-post__author-name">Data de postagem: <span class="card-post__author-name card-post__author-name--primary-color">{{ content.postDate }}</span></p>
       </div>
     </div>
     <slot name="actions" />
@@ -41,7 +41,7 @@ export default {
       background-color: rgb(243, 243, 243);
     }
 
-    &__main-area {
+    &__image-container {
         height: 50%;
     }
 
@@ -54,7 +54,6 @@ export default {
 
     &__category {
       top: 25px;
-      right: -10px;
       background-color: $primary;
       color: white;
       padding: 3px 10px;
@@ -62,10 +61,10 @@ export default {
     }
 
     &__post-title {
-        font-size: 28px;
-        margin: 0 10px;
-        line-height: 36px;
-      }
+      font-size: 28px;
+      margin: 0 10px;
+      line-height: 36px;
+    }
 
     &__short-description {
       margin: 0 10px;
@@ -76,14 +75,16 @@ export default {
       position: absolute;
       bottom: 10px;
       left: 10px;
+      font-size: 10px;
     }
 
-    &__author-name {
-      font-size: 10px;
+    &__author-name{
+      margin-bottom: 0;
 
       &--primary-color {
-        color: $primary;
-      }
+      color: $primary;
     }
+    }
+
   }
 </style>

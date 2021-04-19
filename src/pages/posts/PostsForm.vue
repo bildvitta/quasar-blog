@@ -28,7 +28,7 @@
 
         <div class="q-my-lg flex">
           <q-btn :disable="validateForm" color="primary" @click="saveAction">{{ buttonNameToSave }}</q-btn>
-          <modal-cancel pageToAccess="PostsList" />
+          <modal-cancel hasPagination="PostsList" />
         </div>
       </div>
     </q-page>
@@ -38,7 +38,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { validateRequiredFields, formatDateTime } from 'helpers'
 import { extend } from 'quasar'
-import modalCancel from 'src/components/modalCancel.vue'
+import modalCancel from 'src/components/modalCancel'
 
 export default {
   components: {
@@ -157,8 +157,8 @@ export default {
     },
 
     validateForm () {
-      for (var key in this.values) {
-        if (this.validateRequiredFields(this.values[key]) === 'Campo obrigatório') {
+      for (const key in this.values) {
+        if (this.validateRequiredFields(this.values[key])) {
           return true
         }
       }

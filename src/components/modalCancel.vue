@@ -8,7 +8,7 @@
           </q-card-section>
           <q-card-actions align="center">
             <q-btn flat label="Cancelar" color="primary" v-close-popup />
-            <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: pageToAccess }" />
+            <q-btn label="Confirmar" color="primary" v-close-popup :to="{ name: hasPagination }" />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -18,7 +18,7 @@
 <script>
 export default {
   props: {
-    pageToAccess: {
+    hasPagination: {
       type: String,
       default: ''
     }

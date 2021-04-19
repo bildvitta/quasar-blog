@@ -17,7 +17,7 @@
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
         <div class="q-my-lg flex">
           <q-btn :disable="validateForm" color="primary" label="Editar" @click="editListAuthor" />
-          <modal-cancel pageToAccess="AuthorsList" />
+          <modal-cancel hasPagination="AuthorsList" />
         </div>
       </div>
     </q-page>
