@@ -1,0 +1,19 @@
+{
+  "posts": [
+    { 
+      "id": 1, 
+      "mainImageURL": "https://images.ctfassets.net/3mv54pzvptwz/2Tk5dgqIv5CPOf5n63egGl/3dffaaf3cd49acf31c74ddc38c7d79f3/neymar_jr_man_of_the_match_bayern.jpeg",
+      "title": "Clayton",
+      "shortDescription": "Clayton venceu a champions",
+      "authorName": "Roberto",
+      "category": "Esportes",
+      "mainText": "Aoba Clayton",
+      "postDate": "19/07/2080",
+      "editDate": "18/07/2080"
+    }
+  ],
+
+  "authors": [
+    { "id": 1, "name": "Roberto", "email": "Roberto@hotmail.com" }
+  ]
+}

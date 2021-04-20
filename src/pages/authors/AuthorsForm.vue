@@ -2,12 +2,12 @@
     <q-page class="bg-grey-2 q-pa-lg">
       <div class="flex justify-between">
         <div>
-          <p class="text-h5 q-mb-xs">Editar Autor</p>
+          <p class="text-h5 q-mb-xs">{{ definitionOfPageName}}</p>
           <div>
             <q-breadcrumbs>
               <q-breadcrumbs-el label="Home" />
               <q-breadcrumbs-el label="Autores" />
-              <q-breadcrumbs-el label="Editar autor" />
+              <q-breadcrumbs-el>{{ definitionOfPageName }}</q-breadcrumbs-el>
             </q-breadcrumbs>
           </div>
         </div>
@@ -16,7 +16,7 @@
         <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
         <div class="q-my-lg flex">
-          <q-btn :disable="validateForm" color="primary" label="Editar" @click="editListAuthor" />
+          <q-btn :disable="validateForm" color="primary" @click="saveAction">{{ buttonNameToSave }}</q-btn>
           <modal-cancel hasPagination="AuthorsList" />
         </div>
       </div>
@@ -36,20 +36,21 @@ export default {
   data () {
     return {
       name: '',
-      email: '',
-      confirmCancelData: false
+      email: ''
     }
   },
 
   methods: {
     ...mapActions({
-      editAuthor: 'authors/editAuthor'
+      editAuthor: 'authors/editAuthor',
+      addAuthors: 'authors/addAuthors'
     }),
 
     validateRequiredFields,
+
     validateEmailFields,
 
-    editListAuthor () {
+    editAuthorInformation () {
       const author = {
         values: {
           name: this.name,
@@ -66,13 +67,23 @@ export default {
       this.$router.push({ name: 'AuthorsList' })
     },
 
-    confirmCancel () {
-      this.confirmCancelData = true
-    },
-
     setInputValues () {
       this.name = this.authors[this.authorId].name
       this.email = this.authors[this.authorId].email
+    },
+
+    addAuthorToList () {
+      this.addAuthors({ name: this.name, email: this.email })
+
+      this.$q.notify({
+        message: 'Autor criado com sucesso!',
+        type: 'positive'
+      })
+      this.$router.push({ name: 'AuthorsList' })
+    },
+
+    saveAction () {
+      return this.isCreate ? this.addAuthorToList() : this.editAuthorInformation()
     }
   },
 
@@ -85,14 +96,27 @@ export default {
       return this.$route.params.id
     },
 
+    isCreate () {
+      return this.$route.name === 'AuthorsCreate'
+    },
+
+    definitionOfPageName () {
+      return this.isCreate ? 'Criar autor' : 'Editar autor'
+    },
+
+    buttonNameToSave () {
+      return this.isCreate ? 'Criar' : 'Editar'
+    },
+
     validateForm () {
       return !!(this.validateRequiredFields(this.name) || this.validateEmailFields(this.email))
     }
   },
 
   created () {
-    this.setInputValues()
+    if (!this.isCreate) {
+      this.setInputValues()
+    }
   }
-
 }
 </script>

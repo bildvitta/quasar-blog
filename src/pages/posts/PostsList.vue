@@ -139,7 +139,8 @@ export default {
 
   methods: {
     ...mapActions({
-      removePost: 'posts/removePost'
+      removePost: 'posts/removePost',
+      fetchPosts: 'posts/fetchPosts'
     }),
 
     confirmDelete () {
@@ -178,6 +179,10 @@ export default {
     hasPagination () {
       return this.postsList.length > 8
     }
+  },
+
+  created () {
+    this.fetchPosts()
   }
 }
 </script>
