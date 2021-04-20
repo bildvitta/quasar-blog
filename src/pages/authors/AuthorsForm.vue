@@ -2,12 +2,12 @@
     <q-page class="bg-grey-2 q-pa-lg">
       <div class="flex justify-between">
         <div>
-          <p class="text-h5 q-mb-xs">{{ definitionOfPageName}}</p>
+          <p class="text-h5 q-mb-xs">{{ pageTitle}}</p>
           <div>
             <q-breadcrumbs>
               <q-breadcrumbs-el label="Home" />
               <q-breadcrumbs-el label="Autores" />
-              <q-breadcrumbs-el>{{ definitionOfPageName }}</q-breadcrumbs-el>
+              <q-breadcrumbs-el>{{ pageTitle }}</q-breadcrumbs-el>
             </q-breadcrumbs>
           </div>
         </div>
@@ -16,7 +16,7 @@
         <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
         <div class="q-my-lg flex">
-          <q-btn :disable="validateForm" color="primary" @click="saveAction">{{ buttonNameToSave }}</q-btn>
+          <q-btn :disable="validateForm" color="primary" @click="saveAction">{{ submitButtonLabel }}</q-btn>
           <modal-cancel hasPagination="AuthorsList" />
         </div>
       </div>
@@ -100,11 +100,11 @@ export default {
       return this.$route.name === 'AuthorsCreate'
     },
 
-    definitionOfPageName () {
+    pageTitle () {
       return this.isCreate ? 'Criar autor' : 'Editar autor'
     },
 
-    buttonNameToSave () {
+    submitButtonLabel () {
       return this.isCreate ? 'Criar' : 'Editar'
     },
 
