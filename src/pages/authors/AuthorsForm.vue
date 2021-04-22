@@ -16,7 +16,7 @@
         <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
         <div class="q-my-lg flex">
-          <q-btn :disable="validateForm" color="primary" @click="saveAction">{{ submitButtonLabel }}</q-btn>
+          <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ submitButtonLabel }}</q-btn>
           <modal-cancel hasPagination="AuthorsList" />
         </div>
       </div>
@@ -82,7 +82,7 @@ export default {
       this.$router.push({ name: 'AuthorsList' })
     },
 
-    saveAction () {
+    actionChoose () {
       return this.isCreate ? this.addAuthorToList() : this.editAuthorInformation()
     }
   },
