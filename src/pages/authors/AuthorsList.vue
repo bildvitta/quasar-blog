@@ -83,7 +83,8 @@ export default {
 
   methods: {
     ...mapActions({
-      removeAuthor: 'authors/removeAuthor'
+      removeAuthor: 'authors/removeAuthor',
+      fetchAuthors: 'authors/fecthAuthors'
     }),
 
     deleteAuthor (id) {
@@ -97,6 +98,10 @@ export default {
     confirmDelete () {
       this.confirmDeleteData = true
     }
+  },
+
+  created () {
+    this.fetchAuthors()
   }
 }
 </script>

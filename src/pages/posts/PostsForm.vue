@@ -27,7 +27,7 @@
         <q-editor class="q-my-lg bg-grey-2" v-model="values.mainText" />
 
         <div class="q-my-lg flex">
-          <q-btn :disable="validateForm" color="primary" @click="saveAction">{{ buttonNameToSave }}</q-btn>
+          <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ buttonNameToSave }}</q-btn>
           <modal-cancel hasPagination="PostsList" />
         </div>
       </div>
@@ -110,7 +110,7 @@ export default {
       this.$router.push({ name: 'PostsList' })
     },
 
-    saveAction () {
+    actionChoose () {
       this.isCreate ? this.addPostToList() : this.editPostList()
     },
 

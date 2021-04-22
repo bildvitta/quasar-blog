@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const state = {
   posts: []
 }
@@ -17,6 +19,10 @@ const mutations = {
 
   editPost (state, { values, index }) {
     state.posts[index] = values
+  },
+
+  fetchPosts (state, data) {
+    state.posts = data
   }
 }
 
@@ -31,6 +37,17 @@ const actions = {
 
   editPost ({ commit }, post) {
     commit('editPost', post)
+  },
+
+  async fetchPosts ({ commit }) {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: 'posts'
+      })
+
+      commit('fetchPosts', data)
+    } catch {}
   }
 }
 

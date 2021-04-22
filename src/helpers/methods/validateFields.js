@@ -1,5 +1,5 @@
 function validateRequiredFields (field) {
-  return !field ? 'Campo obrigatório' : undefined
+  return field ? undefined : 'Campo obrigatório'
 }
 
 function validateEmailFields (email) {

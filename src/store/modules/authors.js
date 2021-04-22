@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const state = {
   authors: []
 }
@@ -17,6 +19,10 @@ const mutations = {
 
   editAuthor (state, { values, index }) {
     state.authors[index] = values
+  },
+
+  fecthAuthors (state, data) {
+    state.authors = data
   }
 }
 
@@ -31,6 +37,17 @@ const actions = {
 
   editAuthor ({ commit }, author) {
     commit('editAuthor', author)
+  },
+
+  async fecthAuthors ({ commit }) {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: 'authors'
+      })
+
+      commit('fecthAuthors', data)
+    } catch {}
   }
 }
 
