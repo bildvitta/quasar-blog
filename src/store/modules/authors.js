@@ -9,16 +9,8 @@ const getters = {
 }
 
 const mutations = {
-  setAuthors (state, value) {
-    state.authors.push(value)
-  },
-
   removeAuthor (state, index) {
     state.authors.splice(index, 1)
-  },
-
-  editAuthor (state, { values, index }) {
-    state.authors[index] = values
   },
 
   fecthAuthors (state, data) {
@@ -27,16 +19,8 @@ const mutations = {
 }
 
 const actions = {
-  addAuthors ({ commit }, value) {
-    commit('setAuthors', value)
-  },
-
   removeAuthor ({ commit }, index) {
     commit('removeAuthor', index)
-  },
-
-  editAuthor ({ commit }, author) {
-    commit('editAuthor', author)
   },
 
   async fecthAuthors ({ commit }) {
@@ -47,6 +31,37 @@ const actions = {
       })
 
       commit('fecthAuthors', data)
+    } catch {}
+  },
+
+  async sendAuthors (context, data) {
+    try {
+      await axios({
+        method: 'POST',
+        url: 'authors',
+        data
+      })
+    } catch {}
+  },
+
+  async fecthSpecificAuthor ({ commit }, id) {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: `authors/${id}`
+      })
+
+      return data
+    } catch {}
+  },
+
+  async editAuthor ({ commit }, author) {
+    try {
+      await axios({
+        method: 'PUT',
+        url: `authors/${author.id}`,
+        data: author.values
+      })
     } catch {}
   }
 }

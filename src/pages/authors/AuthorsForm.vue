@@ -43,7 +43,8 @@ export default {
   methods: {
     ...mapActions({
       editAuthor: 'authors/editAuthor',
-      addAuthors: 'authors/addAuthors'
+      sendAuthors: 'authors/sendAuthors',
+      fecthSpecificAuthor: 'authors/fecthSpecificAuthor'
     }),
 
     validateRequiredFields,
@@ -56,7 +57,7 @@ export default {
           name: this.name,
           email: this.email
         },
-        index: this.$route.params.id
+        id: this.authorId
       }
       this.editAuthor(author)
 
@@ -64,16 +65,18 @@ export default {
         message: 'Autor editado com sucesso!',
         type: 'positive'
       })
+
       this.$router.push({ name: 'AuthorsList' })
     },
 
-    setInputValues () {
-      this.name = this.authors[this.authorId].name
-      this.email = this.authors[this.authorId].email
+    async setInputValues () {
+      const author = await this.fecthSpecificAuthor(this.authorId)
+      this.name = author.name
+      this.email = author.email
     },
 
     addAuthorToList () {
-      this.addAuthors({ name: this.name, email: this.email })
+      this.sendAuthors({ name: this.name, email: this.email })
 
       this.$q.notify({
         message: 'Autor criado com sucesso!',
@@ -89,11 +92,12 @@ export default {
 
   computed: {
     ...mapGetters({
-      authors: 'authors/authorsList'
+      authors: 'authors/authorsList',
+      authorValue: 'authors/authorValue'
     }),
 
     authorId () {
-      return this.$route.params.id
+      return Number(this.$route.params.id)
     },
 
     isCreate () {

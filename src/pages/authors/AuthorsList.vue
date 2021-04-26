@@ -20,9 +20,8 @@
           <div class="flex row q-px-md q-py-sm bg-primary text-white">
             <div class="q-mb-none col">Nome</div>
             <div class="q-mb-none col">E-mail</div>
-            <div></div>
           </div>
-          <q-item clickable v-ripple v-for="(author, id) in authorsList" :key="id" class="flex row items-center" >
+          <q-item clickable v-ripple v-for="(author, index) in authorsList" :key="index" class="flex row items-center">
             <p class="q-mb-none col">{{ author.name }}</p>
             <p class="q-mb-none col">{{ author.email }}</p>
             <q-btn flat icon="more_vert">
@@ -30,7 +29,7 @@
                 <q-list class="page-authors-list">
                   <q-item>
                     <q-item-section>
-                      <q-btn flat :to="{ name: 'AuthorsEdit', params: { id } }">Editar</q-btn>
+                      <q-btn flat :to="{ name: 'AuthorsEdit', params: { id: author.id } }">Editar</q-btn>
                     </q-item-section>
                   </q-item>
                   <q-item>
